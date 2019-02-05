@@ -35,6 +35,7 @@
     "lodash": "^4.17.5",
     "object.entries": "^1.0.4",
     "qrcode": "^1.2.0",
-    "speakeasy": "^2.0.0"
+    "speakeasy": "^2.0.0",
+    "watchtower-recorder": "^1.0.0"
   }
 }
