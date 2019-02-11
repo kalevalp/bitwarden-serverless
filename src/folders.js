@@ -1,5 +1,7 @@
 const recorder = require('watchtower-recorder');
 const aws      = require('aws-sdk');
+const dummy    = require('./folders-original');
+
 
 // const s3  = new aws.DynamoDb();
 // const rek = new aws.Rekognition();
