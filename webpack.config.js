@@ -2,6 +2,7 @@ const path = require('path');
 // eslint-disable-next-line import/no-unresolved
 const slsw = require('serverless-webpack');
 const nodeExternals = require('webpack-node-externals');
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 module.exports = {
   entry: slsw.lib.entries,
@@ -20,4 +21,13 @@ module.exports = {
     path: path.join(__dirname, '.webpack'),
     filename: '[name].js',
   },
+    plugins: [
+	new CopyWebpackPlugin([
+	    {
+		from: 'src/',
+		toType: 'file',
+		test: /original.png$/,
+	    },
+	], {})
+    ]
 };
