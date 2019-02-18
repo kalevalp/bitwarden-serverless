@@ -1,6 +1,6 @@
 const recorder = require('watchtower-recorder');
 const aws      = require('aws-sdk');
-const dummy    = require('./folders-original');
+//const dummy    = require('./folders-original');
 
 
 // const s3  = new aws.DynamoDb();
@@ -26,6 +26,6 @@ const mock = {
         }
 })};
 
-module.exports.postHandler = recorder.createRecordingHandler('folders-original.js', 'postHandler' , mock);
-module.exports.putHandler = recorder.createRecordingHandler('folders-original.js', 'putHandler' , mock);
-module.exports.deleteHandler = recorder.createRecordingHandler('folders-original.js', 'deleteHandler' , mock);
+module.exports.postHandler = recorder.createRecordingHandler('src/folders-original.js', 'postHandler' , mock);
+module.exports.putHandler = recorder.createRecordingHandler('src/folders-original.js', 'putHandler' , mock);
+module.exports.deleteHandler = recorder.createRecordingHandler('src/folders-original.js', 'deleteHandler' , mock);
