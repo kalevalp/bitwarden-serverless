@@ -6,8 +6,6 @@ service:
   tableDeletionPolicy:
     prod: Retain
     other: Delete
-plugins:
-  - serverless-webpack
 
 provider:
   name: aws
@@ -38,15 +36,6 @@ provider:
     throttle:
       burstLimit: 300 # request burst
       rateLimit: 5 # requests per second
-
-
-custom:
-  webpack:
-    includeModules: true
-#     # webpackConfig: ./webpack.config.js   # Name of webpack configuration file
-#     # packager: 'npm'   # Packager that will be used to package your external modules
-#     # includeModules: false # enable auto-packing of external modules
-
 
 
 default_cors: &default_cors

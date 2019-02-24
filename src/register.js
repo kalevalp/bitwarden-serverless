@@ -1,8 +1,8 @@
-import * as utils from './lib/api_utils';
-import { User } from './lib/models';
-import { buildUserDocument } from './lib/bitwarden';
+const utils = require('./lib/api_utils');
+const { User } = require('./lib/models');
+const { buildUserDocument } = require('./lib/bitwarden');
 
-export const handler = async (event, context, callback) => {
+module.exports.handler = async (event, context, callback) => {
   console.log('Registration handler triggered', JSON.stringify(event, null, 2));
   if (!event.body) {
     callback(null, utils.validationError('Missing request body'));

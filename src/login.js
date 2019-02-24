@@ -1,10 +1,10 @@
-import querystring from 'querystring';
-import speakeasy from 'speakeasy';
-import * as utils from './lib/api_utils';
-import { User, Device } from './lib/models';
-import { regenerateTokens, hashesMatch, DEFAULT_VALIDITY } from './lib/bitwarden';
+const querystring = require('querystring');
+const speakeasy = require('speakeasy');
+const utils = require('./lib/api_utils');
+const { User, Device } = require('./lib/models');
+const { regenerateTokens, hashesMatch, DEFAULT_VALIDITY } = require('./lib/bitwarden');
 
-export const handler = async (event, context, callback) => {
+module.exports.handler = async (event, context, callback) => {
   console.log('Login handler triggered', JSON.stringify(event, null, 2));
   if (!event.body) {
     callback(null, utils.validationError('Missing request body'));

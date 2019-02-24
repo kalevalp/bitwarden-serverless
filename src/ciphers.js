@@ -1,9 +1,9 @@
-import * as utils from './lib/api_utils';
-import { loadContextFromHeader, buildCipherDocument, touch } from './lib/bitwarden';
-import { mapCipher } from './lib/mappers';
-import { Cipher } from './lib/models';
+const utils = require('./lib/api_utils');
+const { loadContextFromHeader, buildCipherDocument, touch } = require('./lib/bitwarden');
+const { mapCipher } = require('./lib/mappers');
+const { Cipher } = require('./lib/models');
 
-export const postHandler = async (event, context, callback) => {
+module.exports.postHandler = async (event, context, callback) => {
   console.log('Cipher create handler triggered', JSON.stringify(event, null, 2));
 
   if (!event.body) {
@@ -37,7 +37,7 @@ export const postHandler = async (event, context, callback) => {
   }
 };
 
-export const putHandler = async (event, context, callback) => {
+module.exports.putHandler = async (event, context, callback) => {
   console.log('Cipher edit handler triggered', JSON.stringify(event, null, 2));
   if (!event.body) {
     callback(null, utils.validationError('Request body is missing'));
@@ -83,7 +83,7 @@ export const putHandler = async (event, context, callback) => {
   }
 };
 
-export const deleteHandler = async (event, context, callback) => {
+module.exports.deleteHandler = async (event, context, callback) => {
   console.log('Cipher delete handler triggered', JSON.stringify(event, null, 2));
 
   let user;

@@ -1,13 +1,13 @@
-import omit from 'lodash/omit';
-import { Cipher, User } from './lib/models';
-import {
+const omit = require('lodash/omit');
+const { Cipher, User } = require('./lib/models');
+const {
   TYPE_LOGIN,
   TYPE_NOTE,
   TYPE_CARD,
   TYPE_IDENTITY,
-} from './lib/bitwarden';
+} = require('./lib/bitwarden');
 
-export const migrateHandler = async (event, context, callback) => {
+module.exports.migrateHandler = async (event, context, callback) => {
   console.log('Data migration handler triggered', JSON.stringify(event, null, 2));
 
   let ciphers;

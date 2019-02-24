@@ -1,4 +1,4 @@
-export function mapCipher(cipher) {
+function mapCipher(cipher) {
   return {
     Id: cipher.get('uuid'),
     Type: cipher.get('type'),
@@ -20,7 +20,9 @@ export function mapCipher(cipher) {
   };
 }
 
-export function mapUser(user) {
+module.exports.mapCipher = mapCipher;
+
+function mapUser(user) {
   return {
     Id: user.get('uuid'),
     Name: user.get('name'),
@@ -38,7 +40,9 @@ export function mapUser(user) {
   };
 }
 
-export function mapFolder(folder) {
+module.exports.mapUser = mapUser;
+
+function mapFolder(folder) {
   return {
     Id: folder.get('uuid'),
     Name: folder.get('name'),
@@ -47,9 +51,13 @@ export function mapFolder(folder) {
   };
 }
 
-export function getRevisionDateAsMillis(object) {
+module.exports.mapFolder = mapFolder;
+
+function getRevisionDateAsMillis(object) {
   return (new Date(getRevisionDate(object))).getTime();
 }
+
+module.exports.getRevisionDateAsMillis = getRevisionDateAsMillis;
 
 function getRevisionDate(object) {
   // dynogels sets updated at only after update

@@ -1,8 +1,8 @@
-import * as utils from './lib/api_utils';
-import { loadContextFromHeader } from './lib/bitwarden';
-import { getRevisionDateAsMillis, mapUser } from './lib/mappers';
+const utils = require('./lib/api_utils');
+const { loadContextFromHeader } = require('./lib/bitwarden');
+const { getRevisionDateAsMillis, mapUser } = require('./lib/mappers');
 
-export const profileHandler = async (event, context, callback) => {
+module.exports.profileHandler = async (event, context, callback) => {
   console.log('Account profile handler triggered', JSON.stringify(event, null, 2));
 
   let user;
@@ -19,7 +19,7 @@ export const profileHandler = async (event, context, callback) => {
   }
 };
 
-export const putProfileHandler = async (event, context, callback) => {
+module.exports.putProfileHandler = async (event, context, callback) => {
   console.log('Update account profile handler triggered', JSON.stringify(event, null, 2));
 
   let user;
@@ -46,7 +46,7 @@ export const putProfileHandler = async (event, context, callback) => {
   }
 };
 
-export const revisionDateHandler = async (event, context, callback) => {
+module.exports.revisionDateHandler = async (event, context, callback) => {
   console.log('Account revision date handler triggered', JSON.stringify(event, null, 2));
 
   let user;

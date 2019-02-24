@@ -1,5 +1,5 @@
-import dynogels from 'dynogels-promisified';
-import Joi from 'joi';
+const dynogels = require('dynogels-promisified');
+const Joi = require ('joi');
 
 const devicesTableName = process.env.DEVICES_TABLE;
 const usersTableName = process.env.USERS_TABLE;
@@ -11,10 +11,10 @@ dynogels.log = console;
 
 // The migration script runs updates on the models depending on each row's version
 // This is the latest version available for each model, new entries have this version
-export const CIPHER_MODEL_VERSION = 1;
-export const USER_MODEL_VERSION = 2;
+module.exports.CIPHER_MODEL_VERSION = 1;
+module.exports.USER_MODEL_VERSION = 2;
 
-export const Device = dynogels.define('Device', {
+module.exports.Device = dynogels.define('Device', {
   hashKey: 'uuid',
   timestamps: true,
   tableName: devicesTableName,
@@ -29,7 +29,7 @@ export const Device = dynogels.define('Device', {
   },
 });
 
-export const User = dynogels.define('User', {
+module.exports.User = dynogels.define('User', {
   hashKey: 'uuid',
   timestamps: true,
   tableName: usersTableName,
@@ -55,7 +55,7 @@ export const User = dynogels.define('User', {
   },
 });
 
-export const Cipher = dynogels.define('Cipher', {
+module.exports.Cipher = dynogels.define('Cipher', {
   hashKey: 'userUuid',
   rangeKey: 'uuid',
   timestamps: true,
@@ -81,7 +81,7 @@ export const Cipher = dynogels.define('Cipher', {
   },
 });
 
-export const Folder = dynogels.define('Folder', {
+module.exports.Folder = dynogels.define('Folder', {
   hashKey: 'userUuid',
   rangeKey: 'uuid',
   timestamps: true,

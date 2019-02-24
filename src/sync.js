@@ -1,9 +1,9 @@
-import * as utils from './lib/api_utils';
-import { loadContextFromHeader } from './lib/bitwarden';
-import { mapUser, mapCipher, mapFolder } from './lib/mappers';
-import { Cipher, Folder } from './lib/models';
+const utils = require('./lib/api_utils');
+const { loadContextFromHeader } = require('./lib/bitwarden');
+const { mapUser, mapCipher, mapFolder } = require('./lib/mappers');
+const { Cipher, Folder } = require('./lib/models');
 
-export const handler = async (event, context, callback) => {
+module.exports.handler = async (event, context, callback) => {
   console.log('Sync handler triggered', JSON.stringify(event, null, 2));
 
   let user;

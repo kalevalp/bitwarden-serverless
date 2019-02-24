@@ -1,8 +1,8 @@
-import speakeasy from 'speakeasy';
-import qrcode from 'qrcode';
-import { User } from './lib/models';
+const speakeasy = require('speakeasy');
+const qrcode = require('qrcode');
+const { User } = require('./lib/models');
 
-export const setupHandler = async (event, context, callback) => {
+module.exports.setupHandler = async (event, context, callback) => {
   console.log('2FA setup handler triggered', JSON.stringify(event, null, 2));
 
   if (!event.email) {
@@ -34,7 +34,7 @@ export const setupHandler = async (event, context, callback) => {
   }
 };
 
-export const completeHandler = async (event, context, callback) => {
+module.exports.completeHandler = async (event, context, callback) => {
   console.log('2FA complete handler triggered', JSON.stringify(event, null, 2));
 
   if (!event.email) {

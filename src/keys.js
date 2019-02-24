@@ -1,8 +1,8 @@
-import querystring from 'querystring';
-import * as utils from './lib/api_utils';
-import { regenerateTokens, loadContextFromHeader, DEFAULT_VALIDITY } from './lib/bitwarden';
+const querystring = require('querystring');
+const utils = require('./lib/api_utils');
+const { regenerateTokens, loadContextFromHeader, DEFAULT_VALIDITY } = require('./lib/bitwarden');
 
-export const handler = async (event, context, callback) => {
+module.exports.handler = async (event, context, callback) => {
   console.log('Keys handler triggered', JSON.stringify(event, null, 2));
   if (!event.body) {
     callback(null, utils.validationError('Missing request body'));

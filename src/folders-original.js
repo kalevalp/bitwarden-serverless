@@ -1,9 +1,9 @@
-import * as utils from './lib/api_utils';
-import { loadContextFromHeader, touch } from './lib/bitwarden';
-import { mapFolder } from './lib/mappers';
-import { Folder } from './lib/models';
+const utils = require('./lib/api_utils');
+const { loadContextFromHeader, touch } = require('./lib/bitwarden');
+const { mapFolder } = require('./lib/mappers');
+const { Folder } = require('./lib/models');
 
-export const postHandler = async (event, context, callback) => {
+module.exports.postHandler = async (event, context, callback) => {
   console.log('Folder create handler triggered', JSON.stringify(event, null, 2));
 
   if (!event.body) {
@@ -39,7 +39,7 @@ export const postHandler = async (event, context, callback) => {
   }
 };
 
-export const putHandler = async (event, context, callback) => {
+module.exports.putHandler = async (event, context, callback) => {
   console.log('Folder edit handler triggered', JSON.stringify(event, null, 2));
   if (!event.body) {
     callback(null, utils.validationError('Missing request body'));
@@ -85,7 +85,7 @@ export const putHandler = async (event, context, callback) => {
   }
 };
 
-export const deleteHandler = async (event, context, callback) => {
+module.exports.deleteHandler = async (event, context, callback) => {
   console.log('Folder delete handler triggered', JSON.stringify(event, null, 2));
 
   let user;

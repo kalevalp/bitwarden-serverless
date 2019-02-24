@@ -3,7 +3,7 @@
  * The API accepts any case and clients actually send a mix
  * For compatibility, we just use lowercase everywhere
  */
-export function normalizeBody(body) {
+function normalizeBody(body) {
   const normalized = {};
   Object.keys(body).forEach((key) => {
     normalized[key.toLowerCase()] = body[key];
@@ -18,12 +18,14 @@ export function normalizeBody(body) {
  * Pragma,Cache-Control are used by the revision date endpoints
  * Device-Type is used by login
  */
-export const CORS_HEADERS = {
+const CORS_HEADERS = {
   'access-control-allow-origin': '*',
   'access-control-allow-headers': 'Content-Type,Authorization,Accept,Device-type,Pragma,Cache-Control',
 };
 
-export function okResponse(body) {
+module.exports.CORS_HEADERS = CORS_HEADERS;
+
+function okResponse(body) {
   console.log('Success response', { body });
   return {
     statusCode: 200,
@@ -32,7 +34,7 @@ export function okResponse(body) {
   };
 }
 
-export function validationError(message) {
+function validationError(message) {
   console.log('Validation error', { message });
   return {
     statusCode: 400,
@@ -48,7 +50,7 @@ export function validationError(message) {
   };
 }
 
-export function serverError(message, error) {
+function serverError(message, error) {
   console.log('Server error', { message, error });
   return {
     statusCode: 500,
@@ -59,3 +61,8 @@ export function serverError(message, error) {
     }),
   };
 }
+
+module.exports.normalizeBody = normalizeBody;
+module.exports.okResponse = okResponse;
+module.exports.validationError = validationError;
+module.exports.serverError = serverError;

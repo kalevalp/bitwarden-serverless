@@ -1,8 +1,8 @@
-import { KDF_PBKDF2, KDF_PBKDF2_ITERATIONS_DEFAULT } from './lib/crypto';
-import * as utils from './lib/api_utils';
-import { User } from './lib/models';
+const { KDF_PBKDF2, KDF_PBKDF2_ITERATIONS_DEFAULT } = require('./lib/crypto');
+const utils = require('./lib/api_utils');
+const { User } = require('./lib/models');
 
-export const handler = async (event, context, callback) => {
+module.exports.handler = async (event, context, callback) => {
   console.log('Prelogin handler triggered', JSON.stringify(event, null, 2));
 
   if (!event.body) {

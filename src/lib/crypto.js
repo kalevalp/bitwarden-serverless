@@ -1,23 +1,39 @@
-import crypto from 'crypto';
+const crypto = require('crypto');
 
-export const TYPE_AESCBC256_B64 = 0;
-export const TYPE_AESCBC128_HMACSHA256_B64 = 1;
-export const TYPE_AESCBC256_HMACSHA256_B64 = 2;
-export const TYPE_RSA2048_OAEPSHA256_B64 = 3;
-export const TYPE_RSA2048_OAEPSHA1_B64 = 4;
-export const TYPE_RSA2048_OAEPSHA256_HMACSHA256_B64 = 5;
-export const TYPE_RSA2048_OAEPSHA1_HMACSHA256_B64 = 6;
+const TYPE_AESCBC256_B64 = 0;
+const TYPE_AESCBC128_HMACSHA256_B64 = 1;
+const TYPE_AESCBC256_HMACSHA256_B64 = 2;
+const TYPE_RSA2048_OAEPSHA256_B64 = 3;
+const TYPE_RSA2048_OAEPSHA1_B64 = 4;
+const TYPE_RSA2048_OAEPSHA256_HMACSHA256_B64 = 5;
+const TYPE_RSA2048_OAEPSHA1_HMACSHA256_B64 = 6;
 
 // It seems bitwarden is planning to support different types on KDFs
-export const KDF_PBKDF2 = 0;
-export const KDF_PBKDF2_ITERATIONS_DEFAULT = 5000;
-export const KDF_PBKDF2_ITERATIONS_MIN = 5000;
-export const KDF_PBKDF2_ITERATIONS_MAX = 1000000;
+const KDF_PBKDF2 = 0;
+const KDF_PBKDF2_ITERATIONS_DEFAULT = 5000;
+const KDF_PBKDF2_ITERATIONS_MIN = 5000;
+const KDF_PBKDF2_ITERATIONS_MAX = 1000000;
+
+
+module.exports.TYPE_AESCBC256_B64 = TYPE_AESCBC256_B64;
+module.exports.TYPE_AESCBC128_HMACSHA256_B64 = TYPE_AESCBC128_HMACSHA256_B64;
+module.exports.TYPE_AESCBC256_HMACSHA256_B64 = TYPE_AESCBC256_HMACSHA256_B64;
+module.exports.TYPE_RSA2048_OAEPSHA256_B64 = TYPE_RSA2048_OAEPSHA256_B64;
+module.exports.TYPE_RSA2048_OAEPSHA1_B64 = TYPE_RSA2048_OAEPSHA1_B64;
+module.exports.TYPE_RSA2048_OAEPSHA256_HMACSHA256_B64 = TYPE_RSA2048_OAEPSHA256_HMACSHA256_B64;
+module.exports.TYPE_RSA2048_OAEPSHA1_HMACSHA256_B64 = TYPE_RSA2048_OAEPSHA1_HMACSHA256_B64;
+
+// It seems bitwarden is planning to support different types on KDFs
+module.exports.KDF_PBKDF2 = KDF_PBKDF2;
+module.exports.KDF_PBKDF2_ITERATIONS_DEFAULT = KDF_PBKDF2_ITERATIONS_DEFAULT;
+module.exports.KDF_PBKDF2_ITERATIONS_MIN = KDF_PBKDF2_ITERATIONS_MIN;
+module.exports.KDF_PBKDF2_ITERATIONS_MAX = KDF_PBKDF2_ITERATIONS_MAX;
+
 
 /**
  * Bitwarden format of storing ciphers
  */
-export class CipherString {
+class CipherString {
   constructor(type, iv, ciphertext, mac = null) {
     this.type = type;
     this.iv = iv;
@@ -46,7 +62,9 @@ export class CipherString {
   }
 }
 
-export async function makeKeyAsync(
+module.exports.CipherString = CipherString;
+
+async function makeKeyAsync(
   password,
   salt,
   kdf = KDF_PBKDF2,
@@ -73,7 +91,9 @@ export async function makeKeyAsync(
   });
 }
 
-export function makeEncryptionKey(key) {
+module.exports.makeKeyAsync = makeKeyAsync;
+
+function makeEncryptionKey(key) {
   const plaintext = crypto.randomBytes(64);
   const iv = crypto.randomBytes(16);
 
@@ -91,7 +111,10 @@ export function makeEncryptionKey(key) {
   ).toString();
 }
 
-export async function hashPasswordAsync(
+module.exports.makeEncryptionKey = makeEncryptionKey;
+
+
+async function hashPasswordAsync(
   password,
   salt,
   kdf = KDF_PBKDF2,
@@ -112,14 +135,18 @@ export async function hashPasswordAsync(
   });
 }
 
-export function encryptWithMasterPasswordKey(data, userKey, masterKey) {
+module.exports.hashPasswordAsync = hashPasswordAsync;
+
+function encryptWithMasterPasswordKey(data, userKey, masterKey) {
   // Decrypt the encrypted key stored on the user table to get the user key
   const encKey = Buffer.from(decrypt(userKey, masterKey), 'utf-8');
 
   return encrypt(data.toString(), encKey);
 }
 
-export function encrypt(plaintext, mergedKey) {
+module.exports.encryptWithMasterPasswordKey = encryptWithMasterPasswordKey;
+
+function encrypt(plaintext, mergedKey) {
   const key = mergedKey.slice(0, 32);
   const macKey = mergedKey.slice(32, 64);
   const iv = crypto.randomBytes(16);
@@ -144,14 +171,18 @@ export function encrypt(plaintext, mergedKey) {
   );
 }
 
-export function decryptWithMasterPasswordKey(data, userKey, masterKey) {
+module.exports.encrypt = encrypt;
+
+function decryptWithMasterPasswordKey(data, userKey, masterKey) {
   // Decrypt the encrypted key stored on the user table to get the user key
   const encKey = decrypt(userKey, masterKey);
 
   return decrypt(data.toString(), encKey).toString('utf-8');
 }
 
-export function decrypt(rawString, mergedKey) {
+module.exports.decryptWithMasterPasswordKey = decryptWithMasterPasswordKey;
+
+function decrypt(rawString, mergedKey) {
   const key = mergedKey.slice(0, 32);
   const macKey = mergedKey.slice(32, 64);
   const cipherString = CipherString.fromString(rawString);
@@ -188,7 +219,9 @@ export function decrypt(rawString, mergedKey) {
   }
 }
 
-export function macsEqual(macKey, left, right) {
+module.exports.decrypt = decrypt;
+
+function macsEqual(macKey, left, right) {
   const leftMac = crypto.createHmac('sha256', macKey)
     .update(left)
     .digest('hex');
@@ -199,3 +232,5 @@ export function macsEqual(macKey, left, right) {
 
   return leftMac === rightMac;
 }
+
+module.exports.macsEqual = macsEqual;

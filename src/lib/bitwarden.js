@@ -1,21 +1,26 @@
-import jwt from 'jsonwebtoken';
-import crypto from 'crypto';
-import bufferEq from 'buffer-equal-constant-time';
-import entries from 'object.entries';
-import mapKeys from 'lodash/mapKeys';
-import { User, Device, CIPHER_MODEL_VERSION, USER_MODEL_VERSION } from './models';
-import { KDF_PBKDF2_ITERATIONS_DEFAULT } from './crypto';
+const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
+const bufferEq = require('buffer-equal-constant-time');
+const entries = Object.entries; // require('object.entries');
+const {mapKeys} = require('lodash');
+const { User, Device, CIPHER_MODEL_VERSION, USER_MODEL_VERSION } = require('./models');
+const { KDF_PBKDF2_ITERATIONS_DEFAULT } = require('./crypto');
 
 const JWT_DEFAULT_ALGORITHM = 'HS256';
 
-export const TYPE_LOGIN = 1;
-export const TYPE_NOTE = 2;
-export const TYPE_CARD = 3;
-export const TYPE_IDENTITY = 4;
+const TYPE_LOGIN = 1;
+const TYPE_NOTE = 2;
+const TYPE_CARD = 3;
+const TYPE_IDENTITY = 4;
+const DEFAULT_VALIDITY = 60 * 60;
 
-export const DEFAULT_VALIDITY = 60 * 60;
+module.exports.TYPE_LOGIN = TYPE_LOGIN;
+module.exports.TYPE_NOTE = TYPE_NOTE;
+module.exports.TYPE_CARD = TYPE_CARD;
+module.exports.TYPE_IDENTITY = TYPE_IDENTITY;
+module.exports.DEFAULT_VALIDITY = DEFAULT_VALIDITY;
 
-export async function loadContextFromHeader(header) {
+async function loadContextFromHeader(header) {
   if (!header) {
     throw new Error('Missing Authorization header');
   }
@@ -41,7 +46,9 @@ export async function loadContextFromHeader(header) {
   return { user, device };
 }
 
-export function regenerateTokens(user, device) {
+module.exports.loadContextFromHeader = loadContextFromHeader;
+
+function regenerateTokens(user, device) {
   const expiryDate = new Date();
   expiryDate.setTime(expiryDate.getTime() + (DEFAULT_VALIDITY * 1000));
 
@@ -77,11 +84,15 @@ export function regenerateTokens(user, device) {
   return tokens;
 }
 
-export function hashesMatch(hashA, hashB) {
+module.exports.regenerateTokens = regenerateTokens;
+
+function hashesMatch(hashA, hashB) {
   return hashA && hashB && bufferEq(Buffer.from(hashA), Buffer.from(hashB));
 }
 
-export function buildCipherDocument(body, user) {
+module.exports.hashesMatch = hashesMatch;
+
+function buildCipherDocument(body, user) {
   const params = {
     userUuid: user.get('uuid'),
     organizationUuid: body.organizationid,
@@ -130,7 +141,10 @@ export function buildCipherDocument(body, user) {
   return params;
 }
 
-export function buildUserDocument(body) {
+module.exports.buildCipherDocument = buildCipherDocument;
+
+
+function buildUserDocument(body) {
   return {
     email: body.email.toLowerCase(),
     passwordHash: body.masterpasswordhash,
@@ -145,14 +159,20 @@ export function buildUserDocument(body) {
   };
 }
 
-export function generateSecret() {
+module.exports.buildUserDocument = buildUserDocument;
+
+function generateSecret() {
   return crypto.randomBytes(64).toString('hex');
 }
 
-export async function touch(object) {
+module.exports.generateSecret = generateSecret;
+
+async function touch(object) {
   object.set({ updatedAt: new Date().toISOString() });
   await object.updateAsync();
 }
+
+module.exports.touch = touch;
 
 function generateToken() {
   return crypto.randomBytes(64)
