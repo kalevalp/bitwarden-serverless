@@ -7,6 +7,11 @@ service:
     prod: Retain
     other: Delete
 
+custom:
+  handlerFilePostfix: '-wrapper'
+  # handlerFilePostfix: '-original'
+  # handlerFilePostfix: '-empty-sbox'
+  
 provider:
   name: aws
   stage: ${opt:stage, 'prod'}
@@ -138,21 +143,21 @@ functions:
           <<: *default_cors
           path: api/ciphers/{uuid}
   folder_post:
-    handler: src/folders.postHandler
+    handler: src/folders${self:custom.handlerFilePostfix}.postHandler
     events:
       - http:
           method: post
           <<: *default_cors
           path: api/folders
   folder_put:
-    handler: src/folders.putHandler
+    handler: src/folders${self:custom.handlerFilePostfix}.putHandler
     events:
       - http:
           method: put
           <<: *default_cors
           path: api/folders/{uuid}
   folder_delete:
-    handler: src/folders.deleteHandler
+    handler: src/folders${self:custom.handlerFilePostfix}.deleteHandler
     events:
       - http:
           method: delete
