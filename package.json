@@ -6,6 +6,7 @@
     "test": "./test.sh"
   },
   "devDependencies": {
+    "aws-sdk": "^2.409.0",
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.4",
     "babel-plugin-transform-runtime": "^6.23.0",
@@ -23,7 +24,6 @@
   "author": "Vojtěch Vondra",
   "license": "MIT",
   "dependencies": {
-    "aws-sdk": "^2.238.1",
     "buffer-equal-constant-time": "^1.0.1",
     "dynogels": "^9.0.0",
     "dynogels-promisified": "^1.0.4",
