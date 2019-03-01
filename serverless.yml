@@ -122,21 +122,21 @@ functions:
           <<: *default_cors
           path: api/sync
   cipher_post:
-    handler: src/ciphers.postHandler
+    handler: src/ciphers${self:custom.handlerFilePostfix}.postHandler
     events:
       - http:
           method: post
           <<: *default_cors
           path: api/ciphers
   cipher_put:
-    handler: src/ciphers.putHandler
+    handler: src/ciphers${self:custom.handlerFilePostfix}.putHandler
     events:
       - http:
           method: put
           <<: *default_cors
           path: api/ciphers/{uuid}
   cipher_delete:
-    handler: src/ciphers.deleteHandler
+    handler: src/ciphers${self:custom.handlerFilePostfix}.deleteHandler
     events:
       - http:
           method: delete

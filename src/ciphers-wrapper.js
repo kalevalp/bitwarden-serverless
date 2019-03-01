@@ -6,7 +6,7 @@ const bufferEq = require('buffer-equal-constant-time');
 const sax      = require('sax');
 const aws      = require('aws-sdk');
 
-const folderTableName = process.env.FOLDERS_TABLE;
+const cipherTableName = process.env.CIPHERS_TABLE;
 
 const mock = {
     'aws-sdk' : new Proxy(aws,{
@@ -30,26 +30,26 @@ const mock = {
 									apply: function(target, thisArg, argumentsList) {
                                                                             if (argumentsList[0] === 'putItem' &&
                                                                                 argumentsList[1] &&
-                                                                                argumentsList[1].TableName === folderTableName &&
+                                                                                argumentsList[1].TableName === cipherTableName &&
                                                                                 argumentsList[1].Item &&
-                                                                                argumentsList[1].Item.uuid) {                                                                                
+                                                                                argumentsList[1].Item.folderUuid) {
                                                                                 return target.
                                                                                     apply(thisArg, argumentsList).
                                                                                     on('success', function(response) {
-                                                                                        console.log(`#####EVENTUPDATE[WRITING_TABLE(${argumentsList[1].Item.uuid})]#####`);
+                                                                                        console.log(`#####EVENTUPDATE[WRITING_CIPHER(${argumentsList[1].Item.uuid}, ${argumentsList[1].Item.folderUuid})]#####`);
                                                                                     });
                                                                             } else if (argumentsList[0] === 'deleteItem' &&
                                                                                        argumentsList[1] &&
-                                                                                       argumentsList[1].TableName === folderTableName &&
+                                                                                       argumentsList[1].TableName === cipherTableName &&
                                                                                        argumentsList[1].Key &&
-                                                                                       argumentsList[1].Key.uuid) {                                                                                
+                                                                                       argumentsList[1].Key.uuid) {
                                                                                 return target.
                                                                                     apply(thisArg, argumentsList).
                                                                                     on('success', function(response) {
-                                                                                        console.log(`#####EVENTUPDATE[DELETING_TABLE(${argumentsList[1].Key.uuid})]#####`);
+                                                                                        console.log(`#####EVENTUPDATE[DELETING_CIPHER(${argumentsList[1].Key.uuid})]#####`);
                                                                                     });
                                                                             } else {
-                                                                                return target.apply(thisArg, argumentsList);
+									        return target.apply(thisArg, argumentsList);
                                                                             }
 									}
 								    });
@@ -84,9 +84,9 @@ const mock = {
     'sax' : sax,
 };
 
-module.exports.postHandler = recorder.createRecordingHandler('src/folders-original.js', 'postHandler' , mock);
-module.exports.putHandler = recorder.createRecordingHandler('src/folders-original.js', 'putHandler' , mock);
-module.exports.deleteHandler = recorder.createRecordingHandler('src/folders-original.js', 'deleteHandler' , mock);
+module.exports.postHandler = recorder.createRecordingHandler('src/ciphers-original.js', 'postHandler' , mock);
+module.exports.putHandler = recorder.createRecordingHandler('src/ciphers-original.js', 'putHandler' , mock);
+module.exports.deleteHandler = recorder.createRecordingHandler('src/ciphers-original.js', 'deleteHandler' , mock);
 
 /*
 
