@@ -36,7 +36,7 @@ const mock = {
                                                                                 return target.
                                                                                     apply(thisArg, argumentsList).
                                                                                     on('success', function(response) {
-                                                                                        console.log(`#####EVENTUPDATE[WRITING_CIPHER(${argumentsList[1].Item.uuid}, ${argumentsList[1].Item.folderUuid})]#####`);
+                                                                                        console.log(`#####EVENTUPDATE[WRITING_CIPHER(${argumentsList[1].Item.uuid},${argumentsList[1].Item.folderUuid})]#####`);
                                                                                     });
                                                                             } else if (argumentsList[0] === 'deleteItem' &&
                                                                                        argumentsList[1] &&

@@ -270,6 +270,7 @@ functions:
         Ref: EventsTable
       WATCHTOWER_INVOCATION_STREAM:
         Ref: InvocationStream
+      DEBUG_WATCHTOWER: 1
   ##
   ## END of Watchtower Functions
   ########################################
