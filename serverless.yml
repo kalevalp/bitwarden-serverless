@@ -271,6 +271,25 @@ functions:
       WATCHTOWER_INVOCATION_STREAM:
         Ref: InvocationStream
       DEBUG_WATCHTOWER: 1
+
+  watchtower-monitor:
+    handler: src/watchtower-monitor.handler
+    events:
+    - stream:
+        arn:
+          'Fn::GetAtt': [ InvocationStream, Arn ]
+          # Fn::ImportValue: ${self:custom.invocationStream.exportInvocationStreamArn}
+        type: kinesis
+        enabled: true
+        startingPosition: TRIM_HORIZON
+    environment:
+      WATCHTOWER_EVENT_TABLE:
+        Ref: EventsTable
+      WATCHTOWER_INVOCATION_STREAM:
+        Ref: InvocationStream
+      DEBUG_WATCHTOWER: 1
+    role:
+      'Fn::GetAtt': [ EventReaderRole, Arn ]     
   ##
   ## END of Watchtower Functions
   ########################################
@@ -401,6 +420,32 @@ resources:
               -  Effect: Allow
                  Action:
                  - 'dynamodb:BatchWriteItem'
+                 Resource:
+                   Fn::GetAtt: [EventsTable, Arn]
+    ##
+    ## Event-Reader IAM Role
+    EventReaderRole:
+      Type: AWS::IAM::Role
+      Properties:
+        Path: /
+        RoleName: ${self:provider.stage}EventReaderRole
+        AssumeRolePolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Action: sts:AssumeRole
+            Principal:
+              Service: lambda.amazonaws.com
+        ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AdministratorAccess
+        Policies:
+          - PolicyName: QueryEventTable
+            PolicyDocument:
+              Version: '2012-10-17'
+              Statement:
+              -  Effect: Allow
+                 Action:
+                 - 'dynamodb:Query'
                  Resource:
                    Fn::GetAtt: [EventsTable, Arn]
     ## 
